@@ -2,12 +2,12 @@ package it.prova.myebay.dto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import it.prova.myebay.model.Acquisto;
@@ -20,49 +20,64 @@ import it.prova.myebay.validation.ValidationWithPassword;
 
 public class UtenteDTO {
 
+	// impostiamo dei parametri
+	
 	private Long id;
 
-	@NotBlank(message = "{utente.username.notblank}", groups = { ValidationWithPassword.class,
-			ValidationNoPassword.class })
+	// da studiare bene groups##################################
+	@NotBlank(message = "{username.notblank}", groups = {ValidationWithPassword.class, ValidationNoPassword.class })
 	@Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
 	private String username;
 
-	@NotBlank(message = "{utente.password.notblank}", groups = ValidationWithPassword.class)
+	@NotBlank(message = "{password.notblank}", groups = ValidationWithPassword.class)
 	@Size(min = 8, max = 15, message = "Il valore inserito deve essere lungo tra {min} e {max} caratteri")
 	private String password;
 
-	private String passwordVecchia;
-	
-	
-	private String passwordNuova;
-
-
 	private String confermaPassword;
 
-	@NotBlank(message = "{utente.nome.notblank}", groups = { ValidationWithPassword.class, ValidationNoPassword.class })
+	@NotBlank(message = "{nome.notblank}", groups = { ValidationWithPassword.class, ValidationNoPassword.class })
 	private String nome;
 
-	@NotBlank(message = "{utente.cognome.notblank}", groups = { ValidationWithPassword.class,
-			ValidationNoPassword.class })
+	@NotBlank(message = "{cognome.notblank}", groups = { ValidationWithPassword.class, ValidationNoPassword.class })
 	private String cognome;
 
-	private LocalDate dateCreated;
-
-	@NotNull(message = "{utente.creditoResiduo.notnull}")
-	@Min(1)
 	private Double creditoResiduo;
+
+	private LocalDate dateCreated;
 
 	private StatoUtente stato;
 
 	private Long[] ruoliIds;
 
-	private Long[] acquistiIds;
-	private Long[] annunciIds;
+	private Set<Annuncio> annunci = new HashSet<>();
+
+	private Set<Acquisto> acquisti = new HashSet<>();
 
 	public UtenteDTO() {
 	}
 
-	public UtenteDTO(Long id, String username, String nome, String cognome, Double creditoResiduo, StatoUtente stato) {
+	public UtenteDTO(Long id, @NotBlank(message = "{username.notblank}", groups = { ValidationWithPassword.class,
+			ValidationNoPassword.class }) @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String username,
+			@NotBlank(message = "{nome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String nome,
+			@NotBlank(message = "{cognome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String cognome,
+			StatoUtente stato) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.stato = stato;
+	}
+
+	public UtenteDTO(Long id, @NotBlank(message = "{username.notblank}", groups = { ValidationWithPassword.class,
+			ValidationNoPassword.class }) @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String username,
+			@NotBlank(message = "{nome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String nome,
+			@NotBlank(message = "{cognome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String cognome,
+			Double creditoResiduo, StatoUtente stato, Set<Annuncio> annunci) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -70,8 +85,28 @@ public class UtenteDTO {
 		this.cognome = cognome;
 		this.creditoResiduo = creditoResiduo;
 		this.stato = stato;
+		this.annunci = annunci;
 	}
 
+	public UtenteDTO(Long id, @NotBlank(message = "{username.notblank}", groups = { ValidationWithPassword.class,
+			ValidationNoPassword.class }) @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String username,
+			@NotBlank(message = "{nome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String nome,
+			@NotBlank(message = "{cognome.notblank}", groups = { ValidationWithPassword.class,
+					ValidationNoPassword.class }) String cognome,
+			Double creditoResiduo, StatoUtente stato, Set<Annuncio> annunci, Set<Acquisto> acquisti) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.creditoResiduo = creditoResiduo;
+		this.stato = stato;
+		this.annunci = annunci;
+		this.acquisti = acquisti;
+	}
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -112,20 +147,20 @@ public class UtenteDTO {
 		this.cognome = cognome;
 	}
 
-	public LocalDate getDateCreated() {
-		return dateCreated;
-	}
-
-	public void setDateCreated(LocalDate dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-
 	public Double getCreditoResiduo() {
 		return creditoResiduo;
 	}
 
 	public void setCreditoResiduo(Double creditoResiduo) {
 		this.creditoResiduo = creditoResiduo;
+	}
+
+	public LocalDate getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(LocalDate dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 	public StatoUtente getStato() {
@@ -144,22 +179,6 @@ public class UtenteDTO {
 		this.confermaPassword = confermaPassword;
 	}
 
-	public String getPasswordNuova() {
-		return passwordNuova;
-	}
-
-	public void setPasswordNuova(String passwordNuova) {
-		this.passwordNuova = passwordNuova;
-	}
-
-	public String getPasswordVecchia() {
-		return passwordVecchia;
-	}
-
-	public void setPasswordVecchia(String passwordVecchia) {
-		this.passwordVecchia = passwordVecchia;
-	}
-
 	public Long[] getRuoliIds() {
 		return ruoliIds;
 	}
@@ -168,67 +187,53 @@ public class UtenteDTO {
 		this.ruoliIds = ruoliIds;
 	}
 
-	public Long[] getAcquistiIds() {
-		return acquistiIds;
+	public Set<Annuncio> getAnnunci() {
+		return annunci;
 	}
 
-	public void setAcquistiIds(Long[] acquistiIds) {
-		this.acquistiIds = acquistiIds;
+	public void setAnnunci(Set<Annuncio> annunci) {
+		this.annunci = annunci;
 	}
 
-	public Long[] getAnnunciIds() {
-		return annunciIds;
+	
+	
+	public Set<Acquisto> getAcquisti() {
+		return acquisti;
 	}
 
-	public void setAnnunciIds(Long[] annunciIds) {
-		this.annunciIds = annunciIds;
+	public void setAcquisti(Set<Acquisto> acquisti) {
+		this.acquisti = acquisti;
 	}
 
 	public boolean isAttivo() {
 		return this.stato != null && this.stato.equals(StatoUtente.ATTIVO);
 	}
 
-	public Utente buildUtenteModel(boolean includeIdRoles, boolean includeAcquisti, boolean includeAnnunci) {
+	public Utente buildUtenteModel(boolean includeIdRoles) {
 		Utente result = new Utente(this.id, this.username, this.password, this.nome, this.cognome, this.dateCreated,
-				this.stato, this.creditoResiduo);
+				this.stato, this.creditoResiduo, this.annunci, this.acquisti);
 		if (includeIdRoles && ruoliIds != null)
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> new Ruolo(id)).collect(Collectors.toSet()));
-		if (includeAcquisti && acquistiIds != null)
-			result.setAcquisti(
-					Arrays.asList(acquistiIds).stream().map(id -> new Acquisto(id)).collect(Collectors.toSet()));
-		if (includeAnnunci && annunciIds != null)
-			result.setAnnunci(
-					Arrays.asList(annunciIds).stream().map(id -> new Annuncio(id)).collect(Collectors.toSet()));
 
 		return result;
 	}
 
 	// niente password...
-	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel, boolean includeRoles, boolean includeAcquisti,
-			boolean includeAnnunci) {
+	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel, boolean includeRoles) {
 		UtenteDTO result = new UtenteDTO(utenteModel.getId(), utenteModel.getUsername(), utenteModel.getNome(),
-				utenteModel.getCognome(), utenteModel.getCreditoResiduo(), utenteModel.getStato());
+				utenteModel.getCognome(), utenteModel.getCreditoResiduo(), utenteModel.getStato(),
+				utenteModel.getAnnunci(), utenteModel.getAcquisti());
 
 		if (includeRoles && !utenteModel.getRuoli().isEmpty())
 			result.ruoliIds = utenteModel.getRuoli().stream().map(r -> r.getId()).collect(Collectors.toList())
 					.toArray(new Long[] {});
 
-		if (includeAcquisti && !utenteModel.getAcquisti().isEmpty())
-			result.acquistiIds = utenteModel.getAcquisti().stream().map(r -> r.getId()).collect(Collectors.toList())
-					.toArray(new Long[] {});
-
-		if (includeAnnunci && !utenteModel.getAnnunci().isEmpty())
-			result.annunciIds = utenteModel.getAnnunci().stream().map(r -> r.getId()).collect(Collectors.toList())
-					.toArray(new Long[] {});
-
 		return result;
 	}
 
-	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> modelListInput, boolean includeRoles,
-			boolean includeAcquisti, boolean includeAnnunci) {
+	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> modelListInput, boolean includeRoles) {
 		return modelListInput.stream().map(utenteEntity -> {
-			return UtenteDTO.buildUtenteDTOFromModel(utenteEntity, includeRoles, includeAcquisti, includeAnnunci);
+			return UtenteDTO.buildUtenteDTOFromModel(utenteEntity, includeRoles);
 		}).collect(Collectors.toList());
 	}
-
 }

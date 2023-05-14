@@ -1,7 +1,6 @@
 package it.prova.myebay;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,14 +18,13 @@ import it.prova.myebay.service.UtenteService;
 public class MyebayApplication implements CommandLineRunner {
 
 	@Autowired
-	private UtenteService utenteServiceInstance;
-	
-	@Autowired 
 	private RuoloService ruoloServiceInstance;
+	@Autowired
+	private UtenteService utenteServiceInstance;
 	
 	@Autowired
 	private CategoriaService categoriaServiceInstance;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(MyebayApplication.class, args);
 	}
@@ -42,13 +40,14 @@ public class MyebayApplication implements CommandLineRunner {
 		}
 
 		// a differenza degli altri progetti cerco solo per username perche' se vado
-		// anche per password ogni volta ne inserisce uno nuovo, inoltre l'encode della password non lo 
-		//faccio qui perche gia lo fa il service di utente, durante inserisciNuovo
+		// anche per password ogni volta ne inserisce uno nuovo, inoltre l'encode della
+		// password non lo
+		// faccio qui perche gia lo fa il service di utente, durante inserisciNuovo
 		if (utenteServiceInstance.findByUsername("admin") == null) {
 			Utente admin = new Utente("admin", "admin", "Mario", "Rossi", LocalDate.now());
 			admin.getRuoli().add(ruoloServiceInstance.cercaPerDescrizioneECodice("Administrator", "ROLE_ADMIN"));
 			utenteServiceInstance.inserisciNuovo(admin);
-			//l'inserimento avviene come created ma io voglio attivarlo
+			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(admin.getId());
 		}
 
@@ -57,7 +56,7 @@ public class MyebayApplication implements CommandLineRunner {
 			classicUser.getRuoli()
 					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
 			utenteServiceInstance.inserisciNuovo(classicUser);
-			//l'inserimento avviene come created ma io voglio attivarlo
+			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser.getId());
 		}
 
@@ -66,7 +65,7 @@ public class MyebayApplication implements CommandLineRunner {
 			classicUser1.getRuoli()
 					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
 			utenteServiceInstance.inserisciNuovo(classicUser1);
-			//l'inserimento avviene come created ma io voglio attivarlo
+			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser1.getId());
 		}
 
@@ -75,21 +74,23 @@ public class MyebayApplication implements CommandLineRunner {
 			classicUser2.getRuoli()
 					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", "ROLE_CLASSIC_USER"));
 			utenteServiceInstance.inserisciNuovo(classicUser2);
-			//l'inserimento avviene come created ma io voglio attivarlo
+			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser2.getId());
 		}
 		
-		if(categoriaServiceInstance.cercaPerDescrizione("Videogiochi") == null) {
-		Categoria cat1 = new Categoria("Videogiochi","v01");
-		categoriaServiceInstance.inserisciNuovo(cat1);
+		if (categoriaServiceInstance.cercaPerDescrizione("Fumetti") == null) {
+			Categoria categoria1 = new Categoria("Fumetti", "f1");
+			categoriaServiceInstance.inserisciNuovo(categoria1);
 		}
-		if(categoriaServiceInstance.cercaPerDescrizione("Giocattoli") == null) {
-		Categoria cat2 = new Categoria("Giocattoli","g01");
-		categoriaServiceInstance.inserisciNuovo(cat2);
+		
+		if (categoriaServiceInstance.cercaPerDescrizione("Videogiochi") == null) {
+			Categoria categoria2 = new Categoria("Videogiochi", "v1");
+			categoriaServiceInstance.inserisciNuovo(categoria2);
 		}
-		if(categoriaServiceInstance.cercaPerDescrizione("Fumetti") == null) {
-		Categoria cat3 = new Categoria("Fumetti","f01");
-		categoriaServiceInstance.inserisciNuovo(cat3);
+		
+		if (categoriaServiceInstance.cercaPerDescrizione("Veicoli") == null) {
+			Categoria categoria3 = new Categoria("Veicoli", "v2");
+			categoriaServiceInstance.inserisciNuovo(categoria3);
 		}
 		
 	}

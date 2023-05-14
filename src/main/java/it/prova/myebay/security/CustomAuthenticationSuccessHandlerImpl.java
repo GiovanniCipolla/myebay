@@ -16,7 +16,6 @@ import it.prova.myebay.dto.UtenteDTO;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.repository.utente.UtenteRepository;
 
-
 @Component
 public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
@@ -32,10 +31,11 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 		UtenteDTO utenteParziale = new UtenteDTO();
 		utenteParziale.setNome(utenteFromDb.getNome());
 		utenteParziale.setCognome(utenteFromDb.getCognome());
+		utenteParziale.setUsername(utenteFromDb.getUsername());
+		utenteParziale.setCreditoResiduo(utenteFromDb.getCreditoResiduo());
 		request.getSession().setAttribute("userInfo", utenteParziale);
 		response.sendRedirect("home");
 
 	}
 
 }
-

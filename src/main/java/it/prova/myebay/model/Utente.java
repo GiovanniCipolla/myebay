@@ -1,7 +1,6 @@
 package it.prova.myebay.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,16 +17,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import it.prova.myebay.validation.ValidationNoPassword;
-import it.prova.myebay.validation.ValidationWithPassword;
-
-
-
 
 @Entity
 @Table(name = "utente")
@@ -45,41 +34,58 @@ public class Utente {
 	private String nome;
 	@Column(name = "cognome")
 	private String cognome;
-	@Column(name = "datecreated")
+	@Column(name = "dateCreated")
 	private LocalDate dateCreated;
-	
+
+	// se non uso questa annotation viene gestito come un intero
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
 	
 	@Column(name = "creditoresiduo")
 	private Double creditoResiduo;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
-	private Set<Ruolo> ruoli = new HashSet<>(0);
-	
-	@OneToMany(mappedBy = "utenteInserimento",fetch = FetchType.LAZY)
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utente")
 	private Set<Annuncio> annunci = new HashSet<>();
-	
-	@OneToMany(mappedBy = "utenteAcquirente",fetch = FetchType.LAZY)
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utente")
 	private Set<Acquisto> acquisti = new HashSet<>();
 
+	@ManyToMany
+	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
+	private Set<Ruolo> ruoli = new HashSet<>(0);
+
 	public Utente() {
-		super();
 	}
 
-	public Utente(String username, String password, String nome, String cognome) {
+	public Utente(String username, String password) {
 		super();
+		this.username = username;
+		this.password = password;
+	}
+
+	public Utente(String username, String password, String nome, String cognome, LocalDate dateCreated) {
 		this.username = username;
 		this.password = password;
 		this.nome = nome;
 		this.cognome = cognome;
+		this.dateCreated = dateCreated;
 	}
 
+	public Utente(Long id, String username, String password, String nome, String cognome, LocalDate dateCreated,
+			StatoUtente stato) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dateCreated = dateCreated;
+		this.stato = stato;
+	}
+	
 	
 
 	public Utente(Long id, String username, String password, String nome, String cognome, LocalDate dateCreated,
-			StatoUtente stato, Double creditoResiduo) {
+			StatoUtente stato, Double creditoResiduo, Set<Annuncio> annunci) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -89,24 +95,22 @@ public class Utente {
 		this.dateCreated = dateCreated;
 		this.stato = stato;
 		this.creditoResiduo = creditoResiduo;
+		this.annunci = annunci;
 	}
 
-
-
-	public Utente(String username, String password, String nome, String cognome, LocalDate dateCreated) {
+	public Utente(Long id, String username, String password, String nome, String cognome, LocalDate dateCreated,
+			StatoUtente stato, Double creditoResiduo, Set<Annuncio> annunci, Set<Acquisto> acquisti) {
 		super();
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.dateCreated = dateCreated;
-	}
-
-	
-
-	public Utente(Long id) {
-		super();
-		this.id = id;
+		this.stato = stato;
+		this.creditoResiduo = creditoResiduo;
+		this.annunci = annunci;
+		this.acquisti = acquisti;
 	}
 
 	public Long getId() {
@@ -133,6 +137,14 @@ public class Utente {
 		this.password = password;
 	}
 
+	public Set<Ruolo> getRuoli() {
+		return ruoli;
+	}
+
+	public void setRuoli(Set<Ruolo> ruoli) {
+		this.ruoli = ruoli;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -157,20 +169,13 @@ public class Utente {
 		this.dateCreated = dateCreated;
 	}
 
-	public StatoUtente getStato() {
-		return stato;
+	
+	public Double getCreditoResiduo() {
+		return creditoResiduo;
 	}
 
-	public void setStato(StatoUtente stato) {
-		this.stato = stato;
-	}
-
-	public Set<Ruolo> getRuoli() {
-		return ruoli;
-	}
-
-	public void setRuoli(Set<Ruolo> ruoli) {
-		this.ruoli = ruoli;
+	public void setCreditoResiduo(Double creditoResiduo) {
+		this.creditoResiduo = creditoResiduo;
 	}
 
 	public Set<Annuncio> getAnnunci() {
@@ -189,14 +194,14 @@ public class Utente {
 		this.acquisti = acquisti;
 	}
 
-	public Double getCreditoResiduo() {
-		return creditoResiduo;
+	public StatoUtente getStato() {
+		return stato;
 	}
 
-	public void setCreditoResiduo(Double creditoResiduo) {
-		this.creditoResiduo = creditoResiduo;
+	public void setStato(StatoUtente stato) {
+		this.stato = stato;
 	}
-	
+
 	public boolean isAdmin() {
 		for (Ruolo ruoloItem : ruoli) {
 			if (ruoloItem.getCodice().equals(Ruolo.ROLE_ADMIN))
@@ -212,6 +217,4 @@ public class Utente {
 	public boolean isDisabilitato() {
 		return this.stato != null && this.stato.equals(StatoUtente.DISABILITATO);
 	}
-
-	
 }

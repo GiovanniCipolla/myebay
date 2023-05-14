@@ -6,22 +6,20 @@ import it.prova.myebay.model.Annuncio;
 
 public interface AnnuncioService {
 
-	public List<Annuncio> listAllAnnunci() ;
-
-	public Annuncio caricaSingoloAnnuncio(Long id);
+	public List<Annuncio> listAll();
 	
-	public Annuncio caricaSingoloAnnuncioConCategorie(Long id);
-
-	public void aggiorna(Annuncio annuncioInstance);
-
-	public void inserisciNuovo(Annuncio annuncioInstance);
-
-	public void rimuovi(Long idToDelete);
-
-	public List<Annuncio> findByExample(Annuncio example);
+	public Annuncio caricaSingoloElemento(Long id);
+	public Annuncio caricaSingoloElementoConCategorie(Long id);
 	
-	public List<Annuncio> findByIdUtente(Long idUtente);
+	public Annuncio caricaElementoConUtente(Long id);
+	
+	public void aggiorna (Annuncio annuncioInstance);
+	
+	public void inserisciNuovo (Annuncio annuncioInstance);
+	
+	public void rimuovi (Long idAnnuncio);
+	
+	public List<Annuncio> findByExampleRicerca(Annuncio example);
 	
 
-	
 }

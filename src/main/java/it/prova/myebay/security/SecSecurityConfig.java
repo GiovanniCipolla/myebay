@@ -1,5 +1,6 @@
 package it.prova.myebay.security;
 
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+@SuppressAjWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
-public class SecSecurityConfig extends WebSecurityConfigurerAdapter	 {
+public class SecSecurityConfig  extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
@@ -37,10 +39,12 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter	 {
     protected void configure(HttpSecurity http) throws Exception {
     	 http.authorizeRequests()
          .antMatchers("/assets/**").permitAll()
-         .antMatchers("/login","/home").permitAll()
-         .antMatchers("/utente/**").hasRole("ADMIN")
-         .antMatchers("/**").hasAnyRole("ADMIN", "CLASSIC_USER")
-         //.antMatchers("/anonymous*").anonymous()
+         .antMatchers("/**","/public/**").permitAll()
+         .antMatchers("/login").permitAll()
+         .antMatchers("/annuncio/delete","/annuncio/insert").hasAnyRole("ADMIN", "CLASSIC_USER")
+         .antMatchers("/utente").hasAnyRole("ADMIN", "CLASSIC_USER")
+         .antMatchers("/utente/admin").hasRole("ADMIN")
+//         .antMatchers("/anonymous*").anonymous()
          .anyRequest().authenticated()
          .and().exceptionHandling().accessDeniedPage("/accessDenied")
          .and()
@@ -62,4 +66,3 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter	 {
 //         
     }
 }
-

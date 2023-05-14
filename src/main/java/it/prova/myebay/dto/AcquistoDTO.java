@@ -1,57 +1,67 @@
 package it.prova.myebay.dto;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import it.prova.myebay.model.Acquisto;
+import it.prova.myebay.model.Annuncio;
+import it.prova.myebay.model.Categoria;
 import it.prova.myebay.model.Utente;
 
 public class AcquistoDTO {
 
+	// le pagine DTO devono essere una copia del model, mai passare un entità nelle
+	// jsp.
+
 	private Long id;
 
-	@NotBlank(message = "{acquisto.descrizione.notblank}")
-	@Size(min = 2, max = 40, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
+	// nella validazione dobbiamo rendere not blank e not null la descrizione e il
+	// prezzp
+
+
 	private String descrizione;
 
-	@NotNull(message = "{acquisto.data.notnull}")
-	private LocalDate data;
+	private LocalDate dataAcquisto;
 
-	@NotNull(message = "{acquisto.prezzo.notnull}")
-	@Min(1)
-	private Integer prezzo;
+	private Double prezzo;
 
-	@NotNull(message = "{acquisto.utente.notnull}")
-	private UtenteDTO utenteAcquirente;
+	private Utente utente;
 
-	private Long utenteAcquirenteId;
+	// costruttore a due parametri, le altre le setteremo a mano
 
 	public AcquistoDTO() {
-	}
-
-	public AcquistoDTO(Long id) {
-		this.id = id;
-	}
-
-	public AcquistoDTO(Long id, String descrizione, LocalDate data, Integer prezzo) {
 		super();
-		this.id = id;
+	}
+
+	public AcquistoDTO(@NotBlank(message = "{testoAnnuncio.notblank}") String descrizione, double prezzo) {
+		super();
 		this.descrizione = descrizione;
-		this.data = data;
 		this.prezzo = prezzo;
 	}
 
-	public AcquistoDTO(String descrizione, LocalDate data, Integer prezzo) {
+	// implementiamo i metodi che trasformeranno il model in dto e viceversa
+
+	// con questo metodo , trasformiano il dto in model
+	// come parametri prendiamo due boolean per aperto e categorie
+	// il primo se l'annuncio è aperto oppure chiuso
+	// il secondo, invece se vogliamo includere anche le categorie "caricamento
+	// eager"
+
+	public AcquistoDTO(Long id, @NotBlank(message = "{testoAnnuncio.notblank}") String descrizione,
+			LocalDate dataAcquisto, @NotNull(message = "{prezzoAnnuncio.notnull}") @Min(0) Double prezzo,
+			Utente utente) {
 		super();
+		this.id = id;
 		this.descrizione = descrizione;
-		this.data = data;
+		this.dataAcquisto = dataAcquisto;
 		this.prezzo = prezzo;
+		this.utente = utente;
 	}
 
 	public Long getId() {
@@ -70,61 +80,53 @@ public class AcquistoDTO {
 		this.descrizione = descrizione;
 	}
 
-	public LocalDate getData() {
-		return data;
+	public LocalDate getDataAcquisto() {
+		return dataAcquisto;
 	}
 
-	public void setData(LocalDate data) {
-		this.data = data;
+	public void setDataAcquisto(LocalDate dataAcquisto) {
+		this.dataAcquisto = dataAcquisto;
 	}
 
-	public Integer getPrezzo() {
+	public Double getPrezzo() {
 		return prezzo;
 	}
 
-	public void setPrezzo(Integer prezzo) {
+	public void setPrezzo(Double prezzo) {
 		this.prezzo = prezzo;
 	}
 
-	public UtenteDTO getUtenteAcquirente() {
-		return utenteAcquirente;
+	public Utente getUtente() {
+		return utente;
 	}
 
-	public void setUtenteAcquirente(UtenteDTO utenteAcquirente) {
-		this.utenteAcquirente = utenteAcquirente;
+	public void setUtente(Utente utente) {
+		this.utente = utente;
 	}
 
-	public Long getUtenteAcquirenteId() {
-		return utenteAcquirenteId;
-	}
-
-	public void setUtenteAcquirenteId(Long utenteAcquirenteId) {
-		this.utenteAcquirenteId = utenteAcquirenteId;
-	}
-
-	public Acquisto buildAcquistoModel(boolean includeUtenteAcquirente) {
-		Acquisto result = new Acquisto(this.id, this.descrizione, this.data, this.prezzo);
-
-		if (includeUtenteAcquirente && utenteAcquirenteId != null)
-			result.setUtenteAcquirente(new Utente(utenteAcquirenteId));
+	public Acquisto buildAcquistooModel() {
+		// facciamo una new del model e diamo i valori di this.
+		Acquisto result = new Acquisto(this.id, this.descrizione, this.dataAcquisto, this.prezzo, this.utente);
 
 		return result;
 	}
 
-	public static AcquistoDTO buildAcquistoDTOFromModel(Acquisto acquistoModel, boolean includeUtenteAcquirente) {
+	// in questo invece trasformiano il model in dto
+	// inserendo come parametro il model e il boolean per le categorie
+	public static AcquistoDTO buildAnnuncioDTOFromModel(Acquisto acquistoModel) {
+
+		// una new di dto e diamo i valori dell'annuncio come parametro
 		AcquistoDTO result = new AcquistoDTO(acquistoModel.getId(), acquistoModel.getDescrizione(),
-				acquistoModel.getData(), acquistoModel.getPrezzo());
-
-		if (includeUtenteAcquirente)
-			result.utenteAcquirenteId = acquistoModel.getUtenteAcquirente().getId();
+				acquistoModel.getDataAcquisto(), acquistoModel.getPrezzo(), acquistoModel.getUtente());
 
 		return result;
 	}
 
-	public static List<AcquistoDTO> createAcquistoDTOListFromModelList(List<Acquisto> modelListInput,
-			boolean includeUtenteAcquirente) {
+	// una new list dto da una lista model
+	public static List<AcquistoDTO> createAnnuncioDTOListFromModelList(List<Acquisto> modelListInput) {
 		return modelListInput.stream().map(acquistoEntity -> {
-			return AcquistoDTO.buildAcquistoDTOFromModel(acquistoEntity, includeUtenteAcquirente);
+			return AcquistoDTO.buildAnnuncioDTOFromModel(acquistoEntity);
 		}).collect(Collectors.toList());
 	}
+
 }

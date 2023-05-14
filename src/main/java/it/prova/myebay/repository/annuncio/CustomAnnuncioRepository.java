@@ -6,5 +6,5 @@ import it.prova.myebay.model.Annuncio;
 
 public interface CustomAnnuncioRepository {
 
-	public List<Annuncio> findByExample(Annuncio example);
+	List<Annuncio> findByExampleRicerca (Annuncio example);
 }

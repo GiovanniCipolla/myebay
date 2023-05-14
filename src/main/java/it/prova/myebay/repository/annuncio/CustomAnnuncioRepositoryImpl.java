@@ -13,27 +13,32 @@ import org.apache.commons.lang3.StringUtils;
 
 import it.prova.myebay.model.Annuncio;
 
-public class CustomAnnuncioRepositoryImpl implements CustomAnnuncioRepository {
+public class CustomAnnuncioRepositoryImpl implements CustomAnnuncioRepository{
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
-	public List<Annuncio> findByExample(Annuncio example) {
+	public List<Annuncio> findByExampleRicerca(Annuncio example) {
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();
 		List<String> whereClauses = new ArrayList<String>();
 
-		StringBuilder queryBuilder = new StringBuilder("select a from Annuncio a where aperto=true ");
+		StringBuilder queryBuilder = new StringBuilder("select a from Annuncio a left join fetch a.categorie c where a.id = a.id ");
 
+		if (example.getCategorie() != null && !example.getCategorie().isEmpty()) {
+			whereClauses.add(" c in :categorie ");
+			paramaterMap.put("categorie", example.getCategorie());
+		}
 		if (StringUtils.isNotEmpty(example.getTestoAnnuncio())) {
-			whereClauses.add(" a.testoAnnuncio like :testoAnnuncio ");
-			paramaterMap.put("%" + "testoAnnuncio", "%" + example.getTestoAnnuncio() + "%");
+			whereClauses.add(" a.testoAnnuncio  like :testoAnnuncio ");
+			paramaterMap.put("testoAnnuncio", "%" + example.getTestoAnnuncio() + "%");
 		}
-		if (example.getPrezzo() != null) {
-			whereClauses.add("a.prezzo >= :prezzo ");
-			paramaterMap.put("prezzo", example.getPrezzo());
+		if (example.getPrezzo() != null && example.getPrezzo()>0) {
+			whereClauses.add(" a.prezzo >= :prezzo ");
+			paramaterMap.put("prezzo",example.getPrezzo());
 		}
-		
+	
+		whereClauses.add(" a.aperto = true ");
 		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
 		TypedQuery<Annuncio> typedQuery = entityManager.createQuery(queryBuilder.toString(), Annuncio.class);
@@ -44,5 +49,5 @@ public class CustomAnnuncioRepositoryImpl implements CustomAnnuncioRepository {
 
 		return typedQuery.getResultList();
 	}
-
+	
 }

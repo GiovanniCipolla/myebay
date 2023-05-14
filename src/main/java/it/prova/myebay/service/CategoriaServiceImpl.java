@@ -4,46 +4,57 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.myebay.model.Categoria;
 import it.prova.myebay.repository.categoria.CategoriaRepository;
 
 @Service
-public class CategoriaServiceImpl implements CategoriaService {
+public class CategoriaServiceImpl implements CategoriaService{
 
 	@Autowired
-	private CategoriaRepository repository;
+	private CategoriaRepository categoriaRepository;
 	
-	@Transactional(readOnly = true)
-	public List<Categoria> listAllCategorie() {
-		return  (List<Categoria>) repository.findAll();
+	
+	@Override
+	public List<Categoria> listAll() {
+		return (List<Categoria>) categoriaRepository.findAll();
 	}
 
-	@Transactional(readOnly = true)
-	public Categoria caricaSingoloCategoria(Long id) {
-		return repository.findById(id).orElse(null);
+	@Override
+	public Categoria caricaSingoloElemento(Long id) {
+		return categoriaRepository.findById(id).orElse(null);
 	}
 
-	@Transactional
+	@Override
 	public void aggiorna(Categoria categoriaInstance) {
-	repository.save(categoriaInstance);
-	}
-
-	@Transactional
-	public void inserisciNuovo(Categoria categoriaInstance) {
-		repository.save(categoriaInstance);
-	}
-
-	@Transactional
-	public void rimuovi(Long idToDelete) {
-		repository.deleteById(idToDelete);
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Categoria cercaPerDescrizione(String descrizione) {
-		return repository.findByDescrizione(descrizione);
+	public void inserisciNuovo(Categoria categoriaInstance) {
+		categoriaRepository.save(categoriaInstance);
+		
 	}
 
+	@Override
+	public void rimuovi(Long idToDelete) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Categoria cercaPerDescrizioneECodice(String descrizione, String codice) {
+		return categoriaRepository.findByDescrizioneAndCodice(descrizione, codice);
+	}
+
+	@Override
+	public Categoria cercaPerDescrizione(String descrizione) {
+		return categoriaRepository.findByDescrizione(descrizione);
+	}
+
+
+
+	
+	
 }
