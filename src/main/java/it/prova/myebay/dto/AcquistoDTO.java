@@ -113,7 +113,7 @@ public class AcquistoDTO {
 
 	// in questo invece trasformiano il model in dto
 	// inserendo come parametro il model e il boolean per le categorie
-	public static AcquistoDTO buildAnnuncioDTOFromModel(Acquisto acquistoModel) {
+	public static AcquistoDTO buildAcquistoDTOFromModel(Acquisto acquistoModel) {
 
 		// una new di dto e diamo i valori dell'annuncio come parametro
 		AcquistoDTO result = new AcquistoDTO(acquistoModel.getId(), acquistoModel.getDescrizione(),
@@ -123,9 +123,9 @@ public class AcquistoDTO {
 	}
 
 	// una new list dto da una lista model
-	public static List<AcquistoDTO> createAnnuncioDTOListFromModelList(List<Acquisto> modelListInput) {
+	public static List<AcquistoDTO> createAcquistoDTOListFromModelList(List<Acquisto> modelListInput) {
 		return modelListInput.stream().map(acquistoEntity -> {
-			return AcquistoDTO.buildAnnuncioDTOFromModel(acquistoEntity);
+			return AcquistoDTO.buildAcquistoDTOFromModel(acquistoEntity);
 		}).collect(Collectors.toList());
 	}
 

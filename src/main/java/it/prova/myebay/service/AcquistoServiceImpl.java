@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +93,16 @@ public class AcquistoServiceImpl implements AcquistoService {
 	public List<Acquisto> findByExampleRicerca(Acquisto example) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Acquisto> miaLista() {
+		
+		String nome = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		return repository.myList(nome);
+		
+		
 	}
 
 }

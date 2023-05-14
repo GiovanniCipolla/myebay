@@ -80,14 +80,19 @@
 					</a>
 					
 					<sec:authentication property="principal.username" var="utenteInPagina"/>
-					<c:if test="${show_annuncio_attr.utente.username != utenteInPagina }">
+					
+					<c:if test="${show_annuncio_attr.aperto == true }">
+					<p>Annuncio già acquistato</p>
+					</c:if>
+					
+					<c:if test="${show_annuncio_attr.utente.username != utenteInPagina}">
 					
 					<form action="${pageContext.request.contextPath}/acquisto/compra"
 						method="post">
 						<input type="hidden" value="${show_annuncio_attr.id}" name="idAnnuncio"
 							id="idAnnuncio">
 						<button type="submit" name="submit" id="submit"
-							class="btn btn-danger">Conferma</button>
+							class="btn btn-danger">Compra</button>
 							</form>
 					
 					</c:if>

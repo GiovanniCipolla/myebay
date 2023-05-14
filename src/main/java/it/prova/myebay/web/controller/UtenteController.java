@@ -145,7 +145,7 @@ public class UtenteController {
 		if (result.hasErrors()) {
 			return "utente/insert";
 		}
-		utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(true));
+		utenteService.registrazione(utenteDTO.buildUtenteModel(true));
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/home";

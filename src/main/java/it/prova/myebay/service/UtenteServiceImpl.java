@@ -149,4 +149,14 @@ public class UtenteServiceImpl implements UtenteService {
 		return false;
 	}
 
+	@Override
+	public void registrazione(Utente utenteInstance) {
+		utenteInstance.setCreditoResiduo(5D);
+		utenteInstance.setStato(StatoUtente.CREATO);
+		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
+		utenteInstance.setDateCreated(LocalDate.now());
+		repository.save(utenteInstance);
+		
+	}
+
 }

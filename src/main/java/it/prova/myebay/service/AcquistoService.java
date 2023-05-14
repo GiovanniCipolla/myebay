@@ -16,5 +16,7 @@ public interface AcquistoService {
 	
 	public List<Acquisto> findByExampleRicerca(Acquisto example);
 	
+	public List<Acquisto> miaLista();
+	
 
 }
