@@ -54,6 +54,7 @@
 				        <p class="col-md-8 fs-4">Lo staff di MyEbay è felice di  rivederti! cerca subito degli annunci <br> oppure creane uno!</p>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/search">Cerca Annuncio</a>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/insert">Crea Annuncio</a>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/miaLista">Miei Annunci</a>
 				      </div>
 			    </div>
 			    

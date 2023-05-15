@@ -18,4 +18,8 @@ public interface AnnuncioRepository extends CrudRepository<Annuncio, Long>, Cust
 
 	@Query(value = "select * from annuncio where utente_id = ?1", nativeQuery = true)
 	List<Annuncio> myList(Long id);
+	
+	@Query(value = "select * from annuncio a where a.aperto = true", nativeQuery = true)
+	List<Annuncio> listAllAperti();
+	
 }

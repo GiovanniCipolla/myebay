@@ -50,9 +50,9 @@
 			                <tbody>
 			                	<c:forEach items="${acquisto_list_attr }" var="acquistoItem">
 									<tr>
-										<td>${annuncioItem.descrizione }</td>
-										<td>${annuncioItem.prezzo} €</td>
-										<td><fmt:parseDate value="${annuncioItem.dataAcquisto}"
+										<td>${acquistoItem.descrizione}</td>
+										<td>${acquistoItem.prezzo} €</td>
+										<td><fmt:parseDate value="${acquistoItem.dataAcquisto}"
 												pattern="yyyy-MM-dd" var="localDateToBeParsed" type="date" />
 											<fmt:formatDate pattern="dd/MM/yyyy"
 												value="${localDateToBeParsed}" /></td>
@@ -62,6 +62,8 @@
 										</td>
 									</tr>
 								</c:forEach>
+								
+					
 			                </tbody>
 			            </table>
 			        </div>
@@ -69,7 +71,13 @@
 				<!-- end card-body -->			   
 			    </div>
 			</div>	
-	
+				<div class='card-footer'>
+					<a
+						href="${pageContext.request.contextPath}/home"
+						class='btn btn-outline-secondary' style='width: 80px'> <i
+						class='fa fa-chevron-left'></i> Back
+					</a>
+					</div>
 		</div>	
 	<!-- end container -->	
 	</main>

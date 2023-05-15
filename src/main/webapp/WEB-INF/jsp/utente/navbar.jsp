@@ -13,7 +13,7 @@
             <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/home">Home</a>
           
           <li class="nav-item dropdown">
-            <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/acquisto/myList">i miei acquisti</a>
+            <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/acquisto">i miei acquisti</a>
           </li>
            <sec:authorize access="hasRole('ADMIN')">
 		      <li class="nav-item dropdown">

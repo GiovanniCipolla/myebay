@@ -23,5 +23,9 @@ public interface AnnuncioService {
 	
 	public List<Annuncio> findByExampleRicerca(Annuncio example);
 	
+	public List<Annuncio> listaAnnunciAperti();
+	
+	public List<Annuncio> miaLista();
+	
 
 }

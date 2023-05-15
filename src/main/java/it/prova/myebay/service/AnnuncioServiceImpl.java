@@ -122,8 +122,25 @@ public class AnnuncioServiceImpl implements AnnuncioService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Annuncio caricaElementoConUtente(Long id) {
 		return annuncioRepository.findByIdConUtente(id).orElse(null);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Annuncio> listaAnnunciAperti() {
+		return annuncioRepository.listAllAperti();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Annuncio> miaLista() {	
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return annuncioRepository.myList(utenteService.findByUsername(username).getId());
+		
+	}
+	
+	
 
 }

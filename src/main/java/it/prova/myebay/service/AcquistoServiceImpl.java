@@ -11,6 +11,7 @@ import it.prova.myebay.exception.AnnuncioChiusoException;
 import it.prova.myebay.exception.CreditoInsufficienteException;
 import it.prova.myebay.exception.UtenteNonTrovatoException;
 import it.prova.myebay.model.Acquisto;
+import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.repository.acquisto.AcquistoRepository;
 
@@ -41,6 +42,7 @@ public class AcquistoServiceImpl implements AcquistoService {
 		return repository.findByIdConUtente(id).orElseThrow(() -> new UtenteNonTrovatoException());
 	}
 
+
 	// per inserilo rispettare questi parametri
 	// deve essere preso da un annuncio aperto, controllare
 	// ci devono essere disbonibiltà economiche
@@ -50,42 +52,45 @@ public class AcquistoServiceImpl implements AcquistoService {
 	public void inserisciNuovoAcquisto(Long idAnnuncio) {
 
 		// creare Acquisto , dovremmo settarlo a mano visto che non ci sarà una insert
-		Acquisto acquistoInstance = new Acquisto();
+		Acquisto acquistoDaCreare = new Acquisto();
 
+		Annuncio annunciodaAcquistare = annuncioService.caricaSingoloElemento(idAnnuncio);
+		
 		//controlliamo se l'annuncio è aperto o chiuso
-		if (!annuncioService.caricaSingoloElemento(idAnnuncio).isAperto())
+		if (!annunciodaAcquistare.isAperto())
 			throw new AnnuncioChiusoException();
 
 		// prendiamo lusername dell'autenticato e vediamo se esiste nel db per sicurezza
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		Utente utente = utenteService.findByUsername(username);
 
-		if (utenteService.findByUsername(username) == null)
+		if (utente == null)
 			throw new UtenteNonTrovatoException();
 
-		Utente utente = utenteService.findByUsername(username);
 
 		// tramite l'username risaliamo all'utente e controlliamo se ci sono le disponibilità economiche
 		// per acquistare l'annuncio
-		if (utente.getCreditoResiduo() < annuncioService.caricaSingoloElemento(idAnnuncio).getPrezzo())
+		if (utente.getCreditoResiduo() < annunciodaAcquistare.getPrezzo())
 			throw new CreditoInsufficienteException();
 
 		// settiamo il credito dell'acquirente e del venditore
 		Double nuovoCreditoUtenteCheAcquista = utente.getCreditoResiduo()
-				- annuncioService.caricaSingoloElemento(idAnnuncio).getPrezzo();
-		Double nuovoCreditoUtenteCheVende = annuncioService.caricaElementoConUtente(idAnnuncio).getUtente()
-				.getCreditoResiduo() + annuncioService.caricaSingoloElemento(idAnnuncio).getPrezzo();
+				- annunciodaAcquistare.getPrezzo();
+		Double nuovoCreditoUtenteCheVende = annunciodaAcquistare.getUtente()
+				.getCreditoResiduo() + annunciodaAcquistare.getPrezzo();
 		utente.setCreditoResiduo(nuovoCreditoUtenteCheAcquista);
-		annuncioService.caricaElementoConUtente(idAnnuncio).getUtente().setCreditoResiduo(nuovoCreditoUtenteCheVende);
+		annunciodaAcquistare.getUtente().setCreditoResiduo(nuovoCreditoUtenteCheVende);
 		// mettiamo l'annuncio nullo
 		annuncioService.caricaSingoloElemento(idAnnuncio).setAperto(false);
 		
 		//settiamo tutti i campi dell'acquisto copiando dall'annuncio
-		acquistoInstance.setDataAcquisto(LocalDate.now());
-		acquistoInstance.setDescrizione(annuncioService.caricaSingoloElemento(idAnnuncio).getTestoAnnuncio());
-		acquistoInstance.setPrezzo(annuncioService.caricaSingoloElemento(idAnnuncio).getPrezzo());
-		acquistoInstance.setUtente(utente);
+		acquistoDaCreare.setDataAcquisto(LocalDate.now());
+		acquistoDaCreare.setDescrizione(annuncioService.caricaSingoloElemento(idAnnuncio).getTestoAnnuncio());
+		acquistoDaCreare.setPrezzo(annuncioService.caricaSingoloElemento(idAnnuncio).getPrezzo());
+		acquistoDaCreare.setUtente(utente);
 		
-		repository.save(acquistoInstance);
+		repository.save(acquistoDaCreare);
 
 	}
 
@@ -99,8 +104,7 @@ public class AcquistoServiceImpl implements AcquistoService {
 	public List<Acquisto> miaLista() {
 		
 		String nome = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		return repository.myList(nome);
+		return repository.myList(utenteService.findByUsername(nome).getUsername());
 		
 		
 	}

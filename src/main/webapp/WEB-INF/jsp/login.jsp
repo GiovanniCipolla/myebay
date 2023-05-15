@@ -43,8 +43,12 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <a  href="${pageContext.request.contextPath}/utente/registrati">voglio registrarmi! <br></a>
+    <div style="display: flex; justify-content: space-between;">
+		  <button class="w-100 btn btn-lg btn-primary" type="submit" style="flex-basis: 50%;">Sign in</button>
+		  <a href="${pageContext.request.contextPath}/utente/registrati" style="text-decoration: none; background-color: #f8f8f8; border: 1px solid #ccc; padding: 10px 20px; border-radius: 5px; display: inline-block; flex-basis: 50%;">
+		    <span style="font-weight: bold;">Sign Up</span>
+		  </a>
+	</div>
     <a  href="${pageContext.request.contextPath}/home">Registrati più tardi</a>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
  

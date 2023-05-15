@@ -38,11 +38,18 @@ public class AnnuncioController {
 	public ModelAndView listAllAnnunci() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("annuncio_list_attr",
-				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.listAll(), false));
+				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.listaAnnunciAperti(), false));
 		mv.setViewName("annuncio/list");
 		return mv;
 	}
 
+	@GetMapping("/miaLista")
+	public String miaLista(Model model) {
+		model.addAttribute("annuncio_list_attr",AnnuncioDTO.createAnnuncioDTOListFromModelList(
+				annuncioService.miaLista(),true));
+		return "annuncio/list";
+	}
+	
 	@GetMapping("/search")
 	public String searchAnnuncio(Model model) {
 		model.addAttribute("categorie_totali_attr",

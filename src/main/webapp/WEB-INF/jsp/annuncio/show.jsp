@@ -48,6 +48,10 @@
 						<dd class="col-sm-9">${show_annuncio_attr.utente.nome} ${show_annuncio_attr.utente.cognome} (${show_annuncio_attr.utente.username})</dd>
 					</dl>
 					<dl class="row">
+						<dt class="col-sm-3 text-right">Aperto:</dt>
+						<dd class="col-sm-9">${show_annuncio_attr.aperto}</dd>
+					</dl>
+					<dl class="row">
 						<dt class="col-sm-3 text-right">Data Inserimento:</dt>
 						<dd class="col-sm-9">
 							<fmt:parseDate value="${show_annuncio_attr.dataCreazione}"
@@ -79,11 +83,8 @@
 						class='fa fa-chevron-left'></i> Back
 					</a>
 					
+					<sec:authorize access="isAuthenticated()">
 					<sec:authentication property="principal.username" var="utenteInPagina"/>
-					
-					<c:if test="${show_annuncio_attr.aperto == true }">
-					<p>Annuncio già acquistato</p>
-					</c:if>
 					
 					<c:if test="${show_annuncio_attr.utente.username != utenteInPagina}">
 					
@@ -96,6 +97,13 @@
 							</form>
 					
 					</c:if>
+					</sec:authorize>
+					<sec:authorize access="!isAuthenticated()">
+					 <div class="col-md text-end">  <h6 class="navbar-text">
+    	 <a href="${pageContext.request.contextPath}/login">Entra in MyEbay e acquista subito!</a></h6>
+    	 </div>
+    	 </sec:authorize>
+    	 </div>
 					
 				</div>
 				<!-- end card -->
@@ -103,7 +111,6 @@
 
 
 			<!-- end container -->
-		</div>
 
 	</main>
 
