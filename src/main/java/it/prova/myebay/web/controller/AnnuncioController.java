@@ -1,6 +1,6 @@
 package it.prova.myebay.web.controller;
 
-import javax.validation.Valid;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.prova.myebay.dto.AcquistoDTO;
 import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.dto.CategoriaDTO;
 import it.prova.myebay.exception.AnnuncioChiusoException;
@@ -37,6 +38,14 @@ public class AnnuncioController {
 	@GetMapping
 	public ModelAndView listAllAnnunci() {
 		ModelAndView mv = new ModelAndView();
+		List<AnnuncioDTO> result = AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.listaAnnunciAperti(),
+				false);
+		if (result.isEmpty()) {
+			mv.addObject("errorMessage", "la lista degli annunci è vuota! crea il tuo annuncio!");
+			mv.setViewName("annuncio/list");
+			return mv;
+		}
+
 		mv.addObject("annuncio_list_attr",
 				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.listaAnnunciAperti(), false));
 		mv.setViewName("annuncio/list");
@@ -45,11 +54,17 @@ public class AnnuncioController {
 
 	@GetMapping("/miaLista")
 	public String miaLista(Model model) {
-		model.addAttribute("annuncio_list_attr",AnnuncioDTO.createAnnuncioDTOListFromModelList(
-				annuncioService.miaLista(),true));
+		List<AnnuncioDTO> result = AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.miaLista(), true);
+		if (result.isEmpty()) {
+			model.addAttribute("errorMessage", "la lista annunci è vuota , crea tu un annuncio!");
+			return "annuncio/list";
+		}
+		
+		model.addAttribute("annuncio_list_attr",
+				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.miaLista(), true));
 		return "annuncio/list";
 	}
-	
+
 	@GetMapping("/search")
 	public String searchAnnuncio(Model model) {
 		model.addAttribute("categorie_totali_attr",
@@ -60,6 +75,13 @@ public class AnnuncioController {
 
 	@PostMapping("/list")
 	public String listAnnunci(AnnuncioDTO annuncioExample, ModelMap model) {
+		List<AnnuncioDTO> result = AnnuncioDTO.createAnnuncioDTOListFromModelList(
+				annuncioService.findByExampleRicerca(annuncioExample.buildAnnuncioModel(true, true)), true);
+		if (result.isEmpty()) {
+			model.addAttribute("errorMessage", "la lista annunci è vuota , crea tu un annuncio!");
+			return "annuncio/list";
+		}
+		
 		model.addAttribute("annuncio_list_attr", AnnuncioDTO.createAnnuncioDTOListFromModelList(
 				annuncioService.findByExampleRicerca(annuncioExample.buildAnnuncioModel(true, true)), true));
 		return "annuncio/list";
@@ -137,18 +159,15 @@ public class AnnuncioController {
 		Annuncio annuncioModel = annuncioService.caricaSingoloElementoConCategorie(idAnnuncio);
 		AnnuncioDTO annuncioDTO = AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioModel, true);
 		model.addAttribute("edit_annuncio_attr", annuncioDTO);
-		model.addAttribute("categorie_totali_attr", CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
+		model.addAttribute("categorie_totali_attr",
+				CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
 		return "annuncio/edit";
 	}
 
 	@PostMapping("/edit")
-	public String edit(@Valid @ModelAttribute("edit_annuncio_attr") AnnuncioDTO annuncioDTO, BindingResult result,
+	public String edit(@Validated @ModelAttribute("edit_annuncio_attr") AnnuncioDTO annuncioDTO, BindingResult result,
 			Model model, RedirectAttributes redirectAttrs) {
-		
-		
-		
-		
-		
+
 		if (result.hasErrors()) {
 			model.addAttribute("categorie_totali_attr",
 					CategoriaDTO.createCategoriaDTOListFromModelList(categoriaService.listAll()));
@@ -164,10 +183,11 @@ public class AnnuncioController {
 		} catch (UtenteNonTrovatoException e) {
 			redirectAttrs.addFlashAttribute("errorMessage", "Attenzione! Utente non loggato.");
 			return "redirect:/annuncio";
-		} 
-		
+		}
+
 		return "redirect:/annuncio";
-		
 
 	}
+	
+
 }

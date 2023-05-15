@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.dto.RuoloDTO;
 import it.prova.myebay.dto.UtenteDTO;
 import it.prova.myebay.model.Utente;
@@ -46,7 +47,10 @@ public class UtenteController {
 	@GetMapping("/search")
 	public String searchUtente (Model model) {
 		model.addAttribute("ruoli_totali_attr",RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
-		model.addAttribute("search_utente_attr", new UtenteDTO());
+		UtenteDTO utenteDTO = new UtenteDTO();
+//		Long[] resultRuoli = new Long[] { (long) 2 };
+//		utenteDTO.setRuoliIds(resultRuoli);
+		model.addAttribute("search_utente_attr",utenteDTO);
 		return "utente/search";
 	}
 	
@@ -76,6 +80,12 @@ public class UtenteController {
 			model.addAttribute("ruoli_totali_attr", RuoloDTO.createRuoloDTOListFromModelList(ruoloService.listAll()));
 			return "utente/insert";
 		}
+		
+		
+		Long[] resultRuoli = new Long[] { (long) 2 };
+		utenteDTO.setRuoliIds(resultRuoli);
+		
+			
 		utenteService.inserisciNuovo(utenteDTO.buildUtenteModel(true));
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
@@ -150,5 +160,22 @@ public class UtenteController {
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/home";
 	}
+	
+//	@GetMapping("/prepareCredit")
+//	public String prepareCredit(Model model) {
+//		
+//		model.addAttribute("prepareCredit_utente_attr", new UtenteDTO());
+//		return "utente/insertCredit";
+//	}
+	
+//	@PostMapping("/caricaCredit")
+//	public String caricaCredit( @ModelAttribute("prepareCredit_utente_attr") UtenteDTO utenteDTO,
+//			BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+//
+//		
+//
+//		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+//		return "redirect:/utente";
+//	}
 	
 }

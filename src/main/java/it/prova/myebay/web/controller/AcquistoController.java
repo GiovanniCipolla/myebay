@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.myebay.dto.AcquistoDTO;
-import it.prova.myebay.dto.AnnuncioDTO;
+import it.prova.myebay.exception.CreditoInsufficienteException;
 import it.prova.myebay.model.Acquisto;
 import it.prova.myebay.service.AcquistoService;
 import it.prova.myebay.service.UtenteService;
@@ -30,6 +30,13 @@ public class AcquistoController {
 	@GetMapping
 	public ModelAndView listAllAcquisti() {
 		ModelAndView mv = new ModelAndView();
+		List<AcquistoDTO> acquisto_list_attr = AcquistoDTO.createAcquistoDTOListFromModelList(acquistoService.miaLista());
+		if(acquisto_list_attr.isEmpty()) {
+			mv.addObject("errorMessage", "la tua lista acquisti è vuota!");
+			mv.setViewName("acquisto/list");
+			return mv;
+		}
+		
 		mv.addObject("acquisto_list_attr", AcquistoDTO.createAcquistoDTOListFromModelList(acquistoService.miaLista()));
 		mv.setViewName("acquisto/list");
 		return mv;
@@ -42,8 +49,13 @@ public class AcquistoController {
 
 		if (!utenteService.isAutenticato())
 			return "login";
+		try {
+			acquistoService.inserisciNuovoAcquisto(idAnnuncio);
 
-		acquistoService.inserisciNuovoAcquisto(idAnnuncio);
+		} catch (CreditoInsufficienteException e) {
+			redirectAttrs.addFlashAttribute("errorMessage", "Attenzione, credito insufficiente !!");
+			return "redirect:/annuncio";
+		}
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/acquisto";

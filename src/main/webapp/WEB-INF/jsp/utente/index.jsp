@@ -55,6 +55,7 @@
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/search">Cerca Annuncio</a>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/insert">Crea Annuncio</a>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/miaLista">Miei Annunci</a>
+				      <!--    <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/utente/prepareCredit">Ricarica Credito</a> -->
 				      </div>
 			    </div>
 			    

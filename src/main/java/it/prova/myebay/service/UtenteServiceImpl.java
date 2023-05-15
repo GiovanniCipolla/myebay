@@ -60,7 +60,6 @@ public class UtenteServiceImpl implements UtenteService {
 	@Override
 	@Transactional
 	public void inserisciNuovo(Utente utenteInstance) {
-		utenteInstance.setCreditoResiduo(5D);
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDateCreated(LocalDate.now());

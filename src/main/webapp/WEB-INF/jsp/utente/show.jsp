@@ -42,15 +42,7 @@
 						<dt class="col-sm-3 text-right">Username:</dt>
 						<dd class="col-sm-9">${show_utente_attr.username}</dd>
 					</dl>
-					<dl class="row">
-						<dt class="col-sm-3 text-right">Data Creazione:</dt>
-						<dd class="col-sm-9">
-							<fmt:parseDate value="${show_utente_attr.dateCreated}"
-								pattern="yyyy-MM-dd" var="localDateToBeParsed" type="date" />
-							<fmt:formatDate pattern="dd/MM/yyyy"
-								value="${show_utente_attr.localDateToBeParsed}" />
-						</dd>
-					</dl>
+					
 
 					<dl class="row">
 						<dt class="col-sm-3 text-right">Ruoli:</dt>

@@ -84,6 +84,7 @@
 					</a>
 					
 					<sec:authorize access="isAuthenticated()">
+					
 					<sec:authentication property="principal.username" var="utenteInPagina"/>
 					
 					<c:if test="${show_annuncio_attr.utente.username != utenteInPagina}">

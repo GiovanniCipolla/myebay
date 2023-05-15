@@ -26,6 +26,11 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
+//			String refererUrl = request.getHeader("Referer");
+//
+//	        // Reindirizza l'utente alla pagina di origine
+//	        response.sendRedirect(refererUrl);
+		
 		//voglio mettere in sessione uno userInfo perché spring security mette solo un principal da cui attingere username
 		Utente utenteFromDb = utenteRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("Username " + authentication.getName() + " not found"));
 		UtenteDTO utenteParziale = new UtenteDTO();
