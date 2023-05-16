@@ -153,12 +153,13 @@ public class UtenteController {
 			result.rejectValue("confermaPassword", "password.diverse");
 
 		if (result.hasErrors()) {
-			return "utente/insert";
+			return "signup";
 		}
+		
 		utenteService.registrazione(utenteDTO.buildUtenteModel(true));
 
-		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-		return "redirect:/home";
+		redirectAttrs.addFlashAttribute("infoMessage", "Operazione eseguita correttamente, attendi che il tuo profilo venga abilitato");
+		return "redirect:/login";
 	}
 	
 //	@GetMapping("/prepareCredit")

@@ -77,36 +77,39 @@
 				</div>
 
 				<div class='card-footer'>
-					<a
-						href="${pageContext.request.contextPath}/annuncio"
-						class='btn btn-outline-secondary' style='width: 80px'> <i
-						class='fa fa-chevron-left'></i> Back
-					</a>
-					
-					<sec:authorize access="isAuthenticated()">
-					
-					<sec:authentication property="principal.username" var="utenteInPagina"/>
-					
-					<c:if test="${show_annuncio_attr.utente.username != utenteInPagina}">
-					
-					<form action="${pageContext.request.contextPath}/acquisto/compra"
-						method="post">
-						<input type="hidden" value="${show_annuncio_attr.id}" name="idAnnuncio"
-							id="idAnnuncio">
-						<button type="submit" name="submit" id="submit"
-							class="btn btn-danger">Compra</button>
-							</form>
-					
-					</c:if>
-					</sec:authorize>
-					<sec:authorize access="!isAuthenticated()">
-					 <div class="col-md text-end">  <h6 class="navbar-text">
-    	 <a href="${pageContext.request.contextPath}/login">Entra in MyEbay e acquista subito!</a></h6>
-    	 </div>
-    	 </sec:authorize>
-    	 </div>
-					
-				</div>
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="${pageContext.request.contextPath}/annuncio" class='btn btn-outline-secondary'>
+            <i class='fa fa-chevron-left'></i> Back
+        </a>
+
+        <sec:authorize access="isAuthenticated()">
+            <sec:authentication property="principal.username" var="utenteInPagina"/>
+            <c:choose>
+    <c:when test="${show_annuncio_attr.utente.username != utenteInPagina}">
+        <form action="${pageContext.request.contextPath}/acquisto/compra" method="post">
+            <input type="hidden" value="${show_annuncio_attr.id}" name="idAnnuncio" id="idAnnuncio">
+            <button type="submit" name="submit" id="submit" class="btn btn-danger">
+                <i class='fa fa-shopping-cart'></i> Buy
+            </button>
+        </form>
+    </c:when>
+   		 <c:otherwise>
+      		  <p>Sei tu il proprietario di questo annuncio.</p>
+		  </c:otherwise>
+		</c:choose>     
+       </sec:authorize>
+
+ 			    <sec:authorize access="!isAuthenticated()">
+    				     <div>
+         			    <h6 class="navbar-text">
+           				      <a href="${pageContext.request.contextPath}/login">
+            			         <i class='fa fa-sign-in'></i> Login to buy now!
+             			    </a>
+         			    </h6>
+      			   </div>
+   			  </sec:authorize>
+ 		</div>
+	</div>
 				<!-- end card -->
 			</div>
 

@@ -21,8 +21,6 @@
 		        <div class="dropdown-menu" aria-labelledby="dropdown01">
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/search">Ricerca Utenti</a>
 		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Inserisci Utente</a>
-		         <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Mofidica Utente</a>
-		          <a class="dropdown-item" href="${pageContext.request.contextPath}/utente/insert">Elimina Utente</a>
 		        </div>
 		      </li>
 		   </sec:authorize>

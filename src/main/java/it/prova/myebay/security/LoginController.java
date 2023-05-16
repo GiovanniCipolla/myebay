@@ -25,7 +25,23 @@ public class LoginController {
 			model.addAttribute("errorMessage", 
                      getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
-		return "login";
+		
+//		 String referer = request.getHeader("Referer");
+//		    request.getSession().setAttribute("url_prior_login", referer);
+//		    // otteniamo l'URL di reindirizzamento dalla sessione
+//		    String redirectUrl = (String) request.getSession().getAttribute("url_prior_login");
+//
+//		    if (redirectUrl != null) {
+//		        // rimuoviamo l'URL di reindirizzamento dalla sessione
+//		        request.getSession().removeAttribute("url_prior_login");
+//
+//		        return "redirect:" + redirectUrl;
+//		    } else {
+//		        // l'URL di reindirizzamento non è stato impostato, quindi reindirizziamo a una pagina predefinita
+//		        return "redirect:/login";
+//		    }
+		    
+		    return "login";
 	}
 	
 	//questo mi serve per fare il display di un messaggio diverso in caso di account bloccato

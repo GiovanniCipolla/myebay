@@ -65,4 +65,8 @@ public class SecSecurityConfig  extends WebSecurityConfigurerAdapter {
             .disable();
 //         
     }
+//    @Bean
+//    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+//        return new CustomAuthenticationSuccessHandlerImpl();
+//    }
 }

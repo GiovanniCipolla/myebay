@@ -33,7 +33,7 @@ public class AnnuncioDTO {
 
 	private boolean aperto;
 
-	private Utente utente;
+	private UtenteDTO utente;
 
 	private Long[] categorieIds;
 

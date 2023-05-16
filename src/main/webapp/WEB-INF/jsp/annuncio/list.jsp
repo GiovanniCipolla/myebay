@@ -35,14 +35,18 @@
 			    <div class='card-header'>
 			        <h5>Lista dei risultati</h5> 
 			    </div>
-			    <div class='card-body'>
-			    <sec:authorize access="isAuthenticated()">
-			    <a class="btn btn-primary "
-						href="${pageContext.request.contextPath}/annuncio/insert">Add New</a> </sec:authorize>
-			    	<a href="${pageContext.request.contextPath}/annuncio/search" class='btn btn-outline-secondary' >
-				            <i class='fa fa-chevron-left'></i> Torna alla Ricerca
-				        </a>
-			    
+			 <div class='d-flex justify-content-between align-items-center'>
+		    <div>
+		        <a href="${pageContext.request.contextPath}/annuncio/search" class='btn btn-outline-secondary'>
+		            <i class='fa fa-chevron-left'></i> Torna alla Ricerca
+		        </a>
+		    </div>
+			    <div>
+		     	   <sec:authorize access="isAuthenticated()">
+		         		   <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/annuncio/insert">Add New</a>
+		    	    </sec:authorize>
+		  			  </div>
+				</div>
 			        <div class='table-responsive'>
 			            <table class='table table-striped ' >
 			                <thead>

@@ -1,7 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
