@@ -12,9 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.myebay.dto.AcquistoDTO;
+import it.prova.myebay.dto.AnnuncioDTO;
+import it.prova.myebay.exception.AcquistoStessoAnnuncioException;
 import it.prova.myebay.exception.CreditoInsufficienteException;
+import it.prova.myebay.exception.UtenteNonTrovatoException;
 import it.prova.myebay.model.Acquisto;
+import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.service.AcquistoService;
+import it.prova.myebay.service.AnnuncioService;
 import it.prova.myebay.service.UtenteService;
 
 @Controller
@@ -23,9 +28,14 @@ public class AcquistoController {
 
 	@Autowired
 	private AcquistoService acquistoService;
-
+	
 	@Autowired
 	private UtenteService utenteService;
+	
+	@Autowired
+	private AnnuncioService annuncioService;
+
+	
 
 	@GetMapping
 	public ModelAndView listAllAcquisti() {
@@ -47,16 +57,17 @@ public class AcquistoController {
 
 		// ------------------ FARE TRY CATCH DEL METODO ---------------------------
 
-		if (!utenteService.isAutenticato())
-			return "login";
+		
 		try {
 			acquistoService.inserisciNuovoAcquisto(idAnnuncio);
-
 		} catch (CreditoInsufficienteException e) {
 			redirectAttrs.addFlashAttribute("errorMessage", "Attenzione, credito insufficiente !!");
 			return "redirect:/annuncio";
-		}
-
+		} catch(UtenteNonTrovatoException e) {
+			return "redirect:/home";
+		} catch(AcquistoStessoAnnuncioException e) {
+		redirectAttrs.addFlashAttribute("errorMessage", "Attenzione, stai provando ad acquistare un tuo annuncio !!");
+		return "redirect:/annuncio"; }
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/acquisto";
 	}
@@ -75,5 +86,20 @@ public class AcquistoController {
 				AcquistoDTO.createAcquistoDTOListFromModelList(acquistoService.miaLista()));
 		return "acquisto/list";
 	}
+	
+	
+	@GetMapping("/trucco/{idShow}")
+	public String trucco(Long idShow,ModelMap model) {
+		
+		Annuncio annuncioModel = annuncioService.caricaSingoloElementoConCategorie(idShow);
+		
+		AnnuncioDTO annuncioDTO = AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioModel, true);
+		
+		model.addAttribute("show_annuncio_attr", annuncioDTO);
+		model.addAttribute("categorie_totali_attr", annuncioModel.getCategorie());
+		return "annuncio/show";
+		}
+	}
+	
 
-}
+

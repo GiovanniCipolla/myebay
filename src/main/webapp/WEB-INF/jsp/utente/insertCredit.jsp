@@ -36,14 +36,14 @@
 
     <div class="card">
       <div class="card-header">
-        <h5>ricarica credito (in caso di debito, il conto verra' azzerato)</h5>
+        <h5>ricarica/preleva</h5>
       </div>
       <div class="card-body">
 
-        <form:form modelAttribute="credito_utente_attr" method="post" action="${pageContext.request.contextPath}/utente/caricaCredit" novalidate="novalidate" class="row g-3">
+        <form:form modelAttribute="credito_utente_attr" method="post" action="${pageContext.request.contextPath}/utente/ricarica/caricaCredit" novalidate="novalidate" class="row g-3">
 
           <div class="col-md-6">
-            <label for="creditoResiduo" class="form-label">Credito da ricaricare: <span class="text-danger"></span></label>
+            <label for="creditoResiduo" class="form-label">Credito da ricaricare/prelevare: <span class="text-danger"></span></label>
 
             <input type="number" name="creditoResiduo" id="creditoResiduo" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire la ricarica" required>
 

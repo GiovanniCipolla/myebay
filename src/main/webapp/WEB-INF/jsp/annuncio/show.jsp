@@ -78,8 +78,8 @@
 
 				<div class='card-footer'>
     <div class="d-flex justify-content-between align-items-center">
-        <a href="${pageContext.request.contextPath}/annuncio" class='btn btn-outline-secondary'>
-            <i class='fa fa-chevron-left'></i> Back
+        <a href="${pageContext.request.contextPath}/public/annuncio" class='btn btn-outline-secondary'>
+            <i class='fa fa-chevron-left'></i> Tutti gli annunci
         </a>
 
         <sec:authorize access="isAuthenticated()">
@@ -101,11 +101,12 @@
 
  			    <sec:authorize access="!isAuthenticated()">
     				     <div>
-         			    <h6 class="navbar-text">
-           				      <a href="${pageContext.request.contextPath}/login">
-            			         <i class='fa fa-sign-in'></i> Login to buy now!
-             			    </a>
-         			    </h6>
+         			     <form action="${pageContext.request.contextPath}/acquisto/compra" method="post">
+            <input type="hidden" value="${show_annuncio_attr.id}" name="idAnnuncio" id="idAnnuncio">
+            <button type="submit" name="submit" id="submit" class="btn btn-danger">
+                <i class='fa fa-shopping-cart'></i> Login to buy now!
+            </button>
+        </form>
       			   </div>
    			  </sec:authorize>
  		</div>

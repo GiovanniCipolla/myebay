@@ -14,7 +14,7 @@
           </li>
    
           <li class="nav-item">
-            <a class="nav-link active" href="${pageContext.request.contextPath}/annuncio/search">Cerca annunci</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/home">Cerca annunci</a>
           </li>
     
            <sec:authorize access="hasRole('ADMIN')">

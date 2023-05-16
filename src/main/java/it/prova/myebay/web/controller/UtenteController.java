@@ -138,13 +138,13 @@ public class UtenteController {
 		return "utente/show";
 	}
 	
-	@GetMapping("/registrati")
+	@GetMapping("/signup/registrati")
 	public String registrati(Model model) {
 		model.addAttribute("insert_utente_attr", new UtenteDTO());
 		return "signup";
 	}
 	
-	@PostMapping("/signup")
+	@PostMapping("/signup/signup")
 	public String signup(
 			@Validated({	
 					ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
@@ -170,10 +170,15 @@ public class UtenteController {
 	return "utente/insertCredit";
 	}
 	
-	@PostMapping("/caricaCredit")
+	@PostMapping("/ricarica/caricaCredit")
 	public String caricaCredit( Double creditoResiduo,
 			 RedirectAttributes redirectAttrs) {
 
+		if(creditoResiduo == null) {
+			redirectAttrs.addFlashAttribute("errorMessage", "non fare il coglione");
+			return "redirect:/home";
+		}
+		
 		try {
 			utenteService.ricarica(creditoResiduo);
 		} catch (CreditoInsufficienteException e) {
@@ -181,8 +186,8 @@ public class UtenteController {
 			return "redirect:/annuncio";
 		}
 
-		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-		return "redirect:/utente";
+		redirectAttrs.addFlashAttribute("successMessage", "Azione effettuata, fai il logout e rientra per controllare il credito.!");
+		return "redirect:/public/annuncio";
 	}
 	
 }

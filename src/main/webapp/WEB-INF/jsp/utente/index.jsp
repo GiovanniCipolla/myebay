@@ -56,7 +56,7 @@
 					        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/insert">Crea Annuncio</a>
 					        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/miaLista">Miei Annunci</a>
 					        <sec:authentication property="principal.username" var="utenteInPagina"/>
-					        <a class="btn btn-success btn-sm position-fixed bottom-0 end-0 mb-2 me-2" href="${pageContext.request.contextPath}/utente/ricarica/${utenteInPagina}" style="color: white;">Ricarica Credito</a>
+					        <a class="btn btn-success btn-sm position-fixed bottom-0 end-0 mb-2 me-2" href="${pageContext.request.contextPath}/utente/ricarica/${utenteInPagina}" style="color: white;">Ricarica/Prelievo Credito</a>
 					      </div>
 					    </div>
 				  </div>

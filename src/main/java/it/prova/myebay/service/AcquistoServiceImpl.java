@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import it.prova.myebay.exception.AcquistoStessoAnnuncioException;
 import it.prova.myebay.exception.AnnuncioChiusoException;
 import it.prova.myebay.exception.CreditoInsufficienteException;
 import it.prova.myebay.exception.UtenteNonTrovatoException;
@@ -67,6 +68,9 @@ public class AcquistoServiceImpl implements AcquistoService {
 
 		if (utente == null)
 			throw new UtenteNonTrovatoException();
+		
+		if(annunciodaAcquistare.getUtente().equals(utente))
+			throw new AcquistoStessoAnnuncioException();
 
 
 		// tramite l'username risaliamo all'utente e controlliamo se ci sono le disponibilità economiche

@@ -37,7 +37,7 @@
 			    </div>
 			 <div class='d-flex justify-content-between align-items-center'>
 		    <div>
-		        <a href="${pageContext.request.contextPath}/annuncio/search" class='btn btn-outline-secondary'>
+		        <a href="${pageContext.request.contextPath}/public/annuncio/search" class='btn btn-outline-secondary'>
 		            <i class='fa fa-chevron-left'></i> Torna alla Ricerca
 		        </a>
 		    </div>
@@ -68,9 +68,9 @@
 												value="${localDateToBeParsed}" /></td>
 										<td>
 										<c:choose>
-												<c:when test="${!isAutenticato}"><a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/annuncio/show/${annuncioItem.id }">Visualizza</a></c:when>
+												<c:when test="${!isAutenticato}"><a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/public/annuncio/show/${annuncioItem.id }">Visualizza</a></c:when>
 												<c:otherwise>
-												<a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/annuncio/show/${annuncioItem.id }">Visualizza</a>
+												<a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/public/annuncio/show/${annuncioItem.id }">Visualizza</a>
 												<sec:authentication property="principal.username" var="utenteInPagina"/>
 												<c:if test="${annuncioItem.utente.username == utenteInPagina }">
 												<a class="btn btn-sm btn-outline-danger" href="${pageContext.request.contextPath}/annuncio/delete/${annuncioItem.id }">Delete</a>

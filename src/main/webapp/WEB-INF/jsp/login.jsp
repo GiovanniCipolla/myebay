@@ -230,7 +230,7 @@ body {
 			<button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Sign
 				in</button>
 			<div class="d-flex justify-content-between">
-				<a href="${pageContext.request.contextPath}/utente/registrati"
+				<a href="${pageContext.request.contextPath}/utente/signup/registrati"
 					class="btn btn-outline-primary w-49"> <i
 					class="fas fa-user-plus me-2"></i> Sign Up
 				</a> <a href="${pageContext.request.contextPath}/home"
