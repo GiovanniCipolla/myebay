@@ -71,13 +71,12 @@
 				<!-- end card-body -->			   
 			    </div>
 			</div>	
-				<div class='card-footer'>
-					<a
-						href="${pageContext.request.contextPath}/home"
-						class='btn btn-outline-secondary' style='width: 80px'> <i
-						class='fa fa-chevron-left'></i> Back
+				<div class='card-footer' style='display: flex; justify-content: space-between;'>
+					<a href="${pageContext.request.contextPath}/home" class='btn btn-outline-secondary' style='width: 80px'>
+						<i class='fa fa-chevron-left'></i> Back
 					</a>
-					</div>
+					<a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/annuncio/search">Lista annunci</a>
+				</div>
 		</div>	
 	<!-- end container -->	
 	</main>

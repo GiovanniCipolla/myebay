@@ -75,6 +75,7 @@
 												<c:if test="${annuncioItem.utente.username == utenteInPagina }">
 												<a class="btn btn-sm btn-outline-danger" href="${pageContext.request.contextPath}/annuncio/delete/${annuncioItem.id }">Delete</a>
 												<a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/annuncio/edit/${annuncioItem.id }">Edit</a>
+												<p> Il tuo annuncio</p>
 												</c:if>
 												</c:otherwise>
 										</c:choose>

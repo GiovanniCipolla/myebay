@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.dto.RuoloDTO;
 import it.prova.myebay.dto.UtenteDTO;
+import it.prova.myebay.exception.CreditoInsufficienteException;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.service.RuoloService;
 import it.prova.myebay.service.UtenteService;
@@ -162,21 +163,26 @@ public class UtenteController {
 		return "redirect:/login";
 	}
 	
-//	@GetMapping("/prepareCredit")
-//	public String prepareCredit(Model model) {
-//		
-//		model.addAttribute("prepareCredit_utente_attr", new UtenteDTO());
-//		return "utente/insertCredit";
-//	}
+	@GetMapping("/ricarica/{utenteInPagina}")
+	public String ricarica(@PathVariable(required = true) String utenteInPagina, Model model) {
+	model.addAttribute("credito_utente_attr",
+	UtenteDTO.buildUtenteDTOFromModel(utenteService.findByUsername(utenteInPagina),false));
+	return "utente/insertCredit";
+	}
 	
-//	@PostMapping("/caricaCredit")
-//	public String caricaCredit( @ModelAttribute("prepareCredit_utente_attr") UtenteDTO utenteDTO,
-//			BindingResult result, Model model, RedirectAttributes redirectAttrs) {
-//
-//		
-//
-//		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-//		return "redirect:/utente";
-//	}
+	@PostMapping("/caricaCredit")
+	public String caricaCredit( Double creditoResiduo,
+			 RedirectAttributes redirectAttrs) {
+
+		try {
+			utenteService.ricarica(creditoResiduo);
+		} catch (CreditoInsufficienteException e) {
+			redirectAttrs.addFlashAttribute("errorMessage", "Attenzione , il tuo credito attuale non è valido! è stato azzerato");
+			return "redirect:/annuncio";
+		}
+
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/utente";
+	}
 	
 }

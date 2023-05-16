@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import it.prova.myebay.exception.CreditoInsufficienteException;
 import it.prova.myebay.model.StatoUtente;
 import it.prova.myebay.model.Utente;
 import it.prova.myebay.repository.utente.UtenteRepository;
@@ -156,6 +157,30 @@ public class UtenteServiceImpl implements UtenteService {
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDateCreated(LocalDate.now());
 		repository.save(utenteInstance);
+		
+	}
+
+	@Override
+	@Transactional
+	public void ricarica(Double creditoRicarica) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		Utente utente = repository.findByUsername(auth.getName()).orElse(null);
+		
+		
+		
+		if( utente.getCreditoResiduo() == null) {
+			utente.setCreditoResiduo(0D);
+			throw new CreditoInsufficienteException();
+		}
+		
+		Double creditoDaInserie = utente.getCreditoResiduo() + creditoRicarica;
+		utente.setCreditoResiduo( creditoDaInserie);
+		
+		
+		if(utente.getCreditoResiduo() < 0) {
+			utente.setCreditoResiduo(0D);
+		}
 		
 	}
 

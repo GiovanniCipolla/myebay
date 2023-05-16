@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import it.prova.myebay.model.Annuncio;
 import it.prova.myebay.model.Categoria;
@@ -22,7 +23,8 @@ public class AnnuncioDTO {
 	// scelgo che il testo è il prezzo (minimo0) non devono essere lasciati vuoi
 	// all'interno del valore del messaggio abbiamo un valore di default che scriveremo in messagesProperties
 	
-	@NotBlank(message = "{testoAnnuncio.notblank}")
+	@NotBlank(message = "{testo.notblank}")
+	@Size(min = 4, max = 40, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
 	private String testoAnnuncio;
 
 	@NotNull(message = "{prezzoAnnuncio.notnull}")
@@ -45,7 +47,7 @@ public class AnnuncioDTO {
 	
 	public AnnuncioDTO(Long id, @NotBlank(message = "{testoAnnuncio.notblank}") String testoAnnuncio,
 			@NotNull(message = "{prezzoaannuncio.notnull}") @Min(0) Double prezzo, LocalDate dataCreazione,
-			 Utente utente) {
+			UtenteDTO utente) {
 		super();
 		this.id = id;
 		this.testoAnnuncio = testoAnnuncio;
@@ -56,7 +58,7 @@ public class AnnuncioDTO {
 
 	public AnnuncioDTO(Long id, @NotBlank(message = "{testoAnnuncio.notblank}") String testoAnnuncio,
 			@NotNull(message = "{prezzoaannuncio.notnull}") @Min(0) Double prezzo, LocalDate dataCreazione,
-			boolean aperto,Utente utente, Long[] categorieIds) {
+			boolean aperto,UtenteDTO utente, Long[] categorieIds) {
 		super();
 		this.id = id;
 		this.testoAnnuncio = testoAnnuncio;
@@ -109,13 +111,14 @@ public class AnnuncioDTO {
 		this.aperto = aperto;
 	}
 
-	public Utente getUtente() {
+	public UtenteDTO getUtente() {
 		return utente;
 	}
-
-	public void setUtente(Utente utente) {
+	
+	public void setUtente(UtenteDTO utente) {
 		this.utente = utente;
 	}
+
 
 	public Long[] getCategorieIds() {
 		return categorieIds;
@@ -133,8 +136,10 @@ public class AnnuncioDTO {
 	//il secondo, invece se vogliamo includere anche le categorie "caricamento eager"
 	
 	public Annuncio buildAnnuncioModel(boolean aperto, boolean includesCategories) {
+		
+		Utente utenteModel = this.utente != null ? this.utente.buildUtenteModel(true) : null;
 		//facciamo una new del model e diamo i valori di this.
-		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo, this.dataCreazione, this.utente);
+		Annuncio result = new Annuncio(this.id, this.testoAnnuncio, this.prezzo, this.dataCreazione, utenteModel);
 		if (includesCategories && categorieIds != null) {
 			result.setCategorie(
 					Arrays.asList(categorieIds).stream().map(id -> new Categoria(id)).collect(Collectors.toSet()));
@@ -146,13 +151,16 @@ public class AnnuncioDTO {
 	}
 
 	
+	
 	// in questo invece trasformiano il model in dto
 	// inserendo come parametro il model e il boolean per le categorie
 	public static AnnuncioDTO buildAnnuncioDTOFromModel(Annuncio annuncioModel, boolean includesCategorie) {
 
+		
+		
 		// una new di dto e diamo i valori dell'annuncio come parametro
 		AnnuncioDTO result = new AnnuncioDTO(annuncioModel.getId(), annuncioModel.getTestoAnnuncio(),
-				annuncioModel.getPrezzo(), annuncioModel.getDataCreazione(), annuncioModel.getUtente());
+				annuncioModel.getPrezzo(), annuncioModel.getDataCreazione(), UtenteDTO.buildUtenteDTOFromModel(annuncioModel.getUtente(),true));
 
 		if (includesCategorie && !annuncioModel.getCategorie().isEmpty()) {
 			result.categorieIds = annuncioModel.getCategorie().stream().map(r -> r.getId()).collect(Collectors.toList())
@@ -173,5 +181,7 @@ public class AnnuncioDTO {
 			return AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioEntity, includesCategorie);
 		}).collect(Collectors.toList());
 	}
+
+	
 
 }

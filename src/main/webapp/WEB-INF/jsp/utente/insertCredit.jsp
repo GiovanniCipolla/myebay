@@ -22,62 +22,52 @@
 			
 			<!-- Begin page content -->
 			<main class="flex-shrink-0">
-			  <div class="container">
-			  
-			  		<%-- se l'attributo in request ha errori --%>
-					<spring:hasBindErrors  name="insert_utente_attr">
-						<%-- alert errori --%>
-						<div class="alert alert-danger " role="alert">
-							Attenzione!! Sono presenti errori di validazione
-						</div>
-					</spring:hasBindErrors>
-			  
-			  		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none':'' }" role="alert">
-					  ${errorMessage}
-					  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
-					</div>
-			  
-			  <div class='card'>
-				    <div class='card-header'>
-				        <h5>ricarica credito</h5> 
-				    </div>
-				    <div class='card-body'>
-		
-						
-		
-							<form:form modelAttribute="prepareCredit_utente_attr" method="post" action="caricaCredit" novalidate="novalidate" class="row g-3">
-					
-							
-								<div class="col-md-6">
-									<label for="creditoResiduo" class="form-label">Credito  <span class="text-danger"></span></label>
-								
-										<input type="number" name="creditoResiduo" id="creditoResiduo" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire la ricarica " value="${prepareCredit_utente_attr.creditoResiduo }" required>
-				
-								</div>
-								
-								 
-								
-								
-								<div class="col-12">
-									<button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
-									<input class="btn btn-outline-warning" type="reset" value="Ripulisci">
-								</div>
-		
-						</form:form>
-  
-				    
-				    
-					<!-- end card-body -->			   
-				    </div>
-				<!-- end card -->
-				</div>		
-					  
-			    
-			  <!-- end container -->  
-			  </div>
-			  
-			</main>
-			
+  <div class="container">
+    <spring:hasBindErrors name="insert_utente_attr">
+      <div class="alert alert-danger" role="alert">
+        Attenzione!! Sono presenti errori di validazione
+      </div>
+    </spring:hasBindErrors>
+
+    <div class="alert alert-danger alert-dismissible fade show ${errorMessage == null ? 'd-none' : ''}" role="alert">
+      ${errorMessage}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h5>ricarica credito (in caso di debito, il conto verra' azzerato)</h5>
+      </div>
+      <div class="card-body">
+
+        <form:form modelAttribute="credito_utente_attr" method="post" action="${pageContext.request.contextPath}/utente/caricaCredit" novalidate="novalidate" class="row g-3">
+
+          <div class="col-md-6">
+            <label for="creditoResiduo" class="form-label">Credito da ricaricare: <span class="text-danger"></span></label>
+
+            <input type="number" name="creditoResiduo" id="creditoResiduo" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire la ricarica" required>
+
+          </div>
+
+
+
+          <div class="col-12">
+            <button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
+            <input class="btn btn-outline-warning" type="reset" value="Ripulisci">
+          </div>
+
+        </form:form>
+
+
+        <!-- end card-body -->
+      </div>
+      <!-- end card -->
+    </div>
+
+
+    <!-- end container -->
+  </div>
+</main>
 			<!-- Footer -->
 			<jsp:include page="../footer.jsp" />
 	  </body>

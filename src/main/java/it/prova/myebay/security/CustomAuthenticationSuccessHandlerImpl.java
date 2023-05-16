@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.authenticator.SavedRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -67,6 +68,24 @@ public class CustomAuthenticationSuccessHandlerImpl implements AuthenticationSuc
 		utenteParziale.setCreditoResiduo(utenteFromDb.getCreditoResiduo());
 		request.getSession().setAttribute("userInfo", utenteParziale);
 		response.sendRedirect("home");
+		
+		SavedRequest savedRequest = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+		if (savedRequest != null) {
+		String savedRequestUrl = savedRequest.getRequestURI();
+		response.sendRedirect(savedRequestUrl);
+		return;
+		}
+		
+		// SavedRequest savedRequest = new DefaultSavedRequest(request, new PortResolverImpl());
+		//
+//		         request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST", savedRequest);
+//		         String savedRequestUrl = savedRequest.getRedirectUrl();
+		// response.sendRedirect(savedRequestUrl);
+		// return;
+		// response.sendRedirect(request.getHeader("referer"));
+		// response.sendRedirect(HttpHeaders.REFERER);
+
+		response.sendRedirect("secured/home");
 
 	}
 

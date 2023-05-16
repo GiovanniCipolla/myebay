@@ -34,5 +34,7 @@ public interface UtenteService {
 	
 	public void registrazione(Utente utenteInstance);
 	
+	public void ricarica(Double creditoRicarica);
+	
 	
 }

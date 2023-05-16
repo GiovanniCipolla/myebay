@@ -1,4 +1,5 @@
 <!doctype html>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="it" class="h-100" >
 	 <head>
 	 
@@ -41,30 +42,28 @@
 			
 			<!-- Begin page content -->
 			<main class="flex-shrink-0">
-			  <div class="container">
-			  
-			  	<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none':'' }" role="alert">
-				  ${errorMessage}
-				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
-				</div>
-			    
-			     <div class="p-5 mb-4 bg-light rounded-3">
-				      <div class="container-fluid py-5">
-				        <h1 class="display-5 fw-bold">Bentornato  ${userInfo.nome}</h1>
-				        <p class="col-md-8 fs-4">Lo staff di MyEbay è felice di  rivederti! cerca subito degli annunci <br> oppure creane uno!</p>
-				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/search">Cerca Annuncio</a>
-				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/insert">Crea Annuncio</a>
-				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/miaLista">Miei Annunci</a>
-				      <!--    <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/utente/prepareCredit">Ricarica Credito</a> -->
-				      </div>
-			    </div>
-			    
-			  </div>
-			  
-			  
+				  <div class="container">
+					    <div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none':'' }" role="alert">
+					      ${errorMessage}
+					      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					    </div>
+					
+					    <div class="p-5 mb-4 bg-light rounded-3">
+					      <div class="container-fluid py-5">
+					        <h1 class="display-5 fw-bold">Bentornato  ${userInfo.nome}</h1>
+					        <p class="col-md-8 fs-4">Lo staff di MyEbay è felice di rivederti! Cerca subito degli annunci oppure creane uno!</p>
+					        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/search">Cerca Annuncio</a>
+					        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/insert">Crea Annuncio</a>
+					        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/annuncio/miaLista">Miei Annunci</a>
+					        <sec:authentication property="principal.username" var="utenteInPagina"/>
+					        <a class="btn btn-success btn-sm position-fixed bottom-0 end-0 mb-2 me-2" href="${pageContext.request.contextPath}/utente/ricarica/${utenteInPagina}" style="color: white;">Ricarica Credito</a>
+					      </div>
+					    </div>
+				  </div>
 			</main>
 			
 			<!-- Footer -->
 			<jsp:include page="./footer.jsp" />
 	  </body>
 </html>
+

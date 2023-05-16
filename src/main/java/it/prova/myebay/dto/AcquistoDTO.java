@@ -1,7 +1,6 @@
 package it.prova.myebay.dto;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,8 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import it.prova.myebay.model.Acquisto;
-import it.prova.myebay.model.Annuncio;
-import it.prova.myebay.model.Categoria;
 import it.prova.myebay.model.Utente;
 
 public class AcquistoDTO {
@@ -31,7 +28,7 @@ public class AcquistoDTO {
 
 	private Double prezzo;
 
-	private Utente utente;
+	private UtenteDTO utente;
 
 	// costruttore a due parametri, le altre le setteremo a mano
 
@@ -55,7 +52,7 @@ public class AcquistoDTO {
 
 	public AcquistoDTO(Long id, @NotBlank(message = "{testoAnnuncio.notblank}") String descrizione,
 			LocalDate dataAcquisto, @NotNull(message = "{prezzoAnnuncio.notnull}") @Min(0) Double prezzo,
-			Utente utente) {
+			UtenteDTO utente) {
 		super();
 		this.id = id;
 		this.descrizione = descrizione;
@@ -96,17 +93,19 @@ public class AcquistoDTO {
 		this.prezzo = prezzo;
 	}
 
-	public Utente getUtente() {
+	public UtenteDTO getUtenteDTO() {
 		return utente;
 	}
 
-	public void setUtente(Utente utente) {
+	public void setUtenteDTO(UtenteDTO utente) {
 		this.utente = utente;
 	}
 
 	public Acquisto buildAcquistooModel() {
+		
+		Utente utenteModel = this.utente != null ? this.utente.buildUtenteModel(true) : null;
 		// facciamo una new del model e diamo i valori di this.
-		Acquisto result = new Acquisto(this.id, this.descrizione, this.dataAcquisto, this.prezzo, this.utente);
+		Acquisto result = new Acquisto(this.id, this.descrizione, this.dataAcquisto, this.prezzo, utenteModel);
 
 		return result;
 	}
@@ -117,7 +116,7 @@ public class AcquistoDTO {
 
 		// una new di dto e diamo i valori dell'annuncio come parametro
 		AcquistoDTO result = new AcquistoDTO(acquistoModel.getId(), acquistoModel.getDescrizione(),
-				acquistoModel.getDataAcquisto(), acquistoModel.getPrezzo(), acquistoModel.getUtente());
+				acquistoModel.getDataAcquisto(), acquistoModel.getPrezzo(), UtenteDTO.buildUtenteDTOFromModel(acquistoModel.getUtente(),true));
 
 		return result;
 	}
