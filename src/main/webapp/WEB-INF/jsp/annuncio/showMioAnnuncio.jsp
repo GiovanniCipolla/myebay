@@ -78,12 +78,13 @@
 
 				<div class='card-footer'>
     <div class="d-flex justify-content-between align-items-center">
-        <a href="${pageContext.request.contextPath}/public/annuncio" class='btn btn-outline-secondary'>
-            <i class='fa fa-chevron-left'></i> Tutti gli annunci
+        <a href="${pageContext.request.contextPath}/annuncio/miaLista" class='btn btn-outline-secondary'>
+            <i class='fa fa-chevron-left'></i> Miei annunci
         </a>
-           <a href="${pageContext.request.contextPath}/home" class='btn btn-outline-secondary'>
+        <a href="${pageContext.request.contextPath}/home" class='btn btn-outline-secondary'>
             <i class='fa fa-chevron-left'></i> Torna alla home
         </a>
+
         <sec:authorize access="isAuthenticated()">
             <sec:authentication property="principal.username" var="utenteInPagina"/>
             <c:choose>

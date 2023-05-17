@@ -40,8 +40,8 @@
 		        <a href="${pageContext.request.contextPath}/public/annuncio/search" class='btn btn-outline-secondary'>
 		            <i class='fa fa-chevron-left'></i> Torna alla Ricerca
 		        </a>
-		        <a href="${pageContext.request.contextPath}/annuncio/miaLista" class='btn btn-outline-secondary'>
-		            <i class='fa fa-chevron-left'></i> Miei Annunci
+		        <a href="${pageContext.request.contextPath}/annuncio" class='btn btn-outline-secondary'>
+		            <i class='fa fa-chevron-left'></i> va su tutti gli annunci
 		        </a>
 		    </div>
 			    <div>
@@ -66,12 +66,14 @@
 									<tr>
 										<td>${annuncioItem.testoAnnuncio }</td>
 										<td>${annuncioItem.prezzo} €</td>
+										
 										<c:if test="${annuncioItem.aperto == true }">
 										<td> Disponibile</td>
 										</c:if>
 										<c:if test="${annuncioItem.aperto == false }">
 										<td> Venduto</td>
 										</c:if>
+										
 										<td><fmt:parseDate value="${annuncioItem.dataCreazione}"
 												pattern="yyyy-MM-dd" var="localDateToBeParsed" type="date" />
 											<fmt:formatDate pattern="dd/MM/yyyy"
@@ -80,7 +82,7 @@
 										<c:choose>
 												<c:when test="${!isAutenticato}"><a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/public/annuncio/show/${annuncioItem.id }">Visualizza</a></c:when>
 												<c:otherwise>
-												<a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/public/annuncio/show/${annuncioItem.id }">Visualizza</a>
+												<a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/annuncio/showMio/${annuncioItem.id }">Visualizza</a>
 												<sec:authentication property="principal.username" var="utenteInPagina"/>
 												<c:if test="${annuncioItem.utente.username == utenteInPagina }">
 												<a class="btn btn-sm btn-outline-danger" href="${pageContext.request.contextPath}/annuncio/delete/${annuncioItem.id }">Delete</a>

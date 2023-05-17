@@ -75,7 +75,7 @@
 					<a href="${pageContext.request.contextPath}/home" class='btn btn-outline-secondary' style='width: 80px'>
 						<i class='fa fa-chevron-left'></i> Back
 					</a>
-					<a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/annuncio/search">Lista annunci</a>
+					<a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/annuncio/search">Ricerca Annuncio</a>
 				</div>
 		</div>	
 	<!-- end container -->	

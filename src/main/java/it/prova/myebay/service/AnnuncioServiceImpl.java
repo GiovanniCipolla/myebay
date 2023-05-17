@@ -67,7 +67,7 @@ public class AnnuncioServiceImpl implements AnnuncioService{
 			throw new AnnuncioChiusoException();
 		} 
 		
-		annuncioInstance.setAperto(true);
+		
 		annuncioInstance.setDataCreazione(LocalDate.now());
 		annuncioInstance.setUtente(utenteFromDb);
 		annuncioRepository.save(annuncioInstance);

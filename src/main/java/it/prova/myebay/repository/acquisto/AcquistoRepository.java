@@ -11,7 +11,7 @@ import it.prova.myebay.model.Acquisto;
 public interface AcquistoRepository extends CrudRepository<Acquisto, Long>, CustomAcquistoRepository{
 	
 	
-	@Query("from Acquisto a left join fetch a.utente where a.id = ?1")
+	@Query("select distinct a from Acquisto a left join fetch a.utente where a.id = ?1")
 	Optional<Acquisto> findByIdConUtente(Long id);
 	
 	

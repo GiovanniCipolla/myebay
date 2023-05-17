@@ -57,12 +57,12 @@ public class AnnuncioController {
 		List<AnnuncioDTO> result = AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.miaLista(), true);
 		if (result.isEmpty()) {
 			model.addAttribute("errorMessage", "la lista annunci è vuota , crea tu un annuncio!");
-			return "annuncio/list";
+			return "annuncio/listaMieiAnnunci";
 		}
 		
 		model.addAttribute("annuncio_list_attr",
 				AnnuncioDTO.createAnnuncioDTOListFromModelList(annuncioService.miaLista(), true));
-		return "annuncio/list";
+		return "annuncio/listaMieiAnnunci";
 	}
 
 	@GetMapping("/search")
@@ -122,6 +122,15 @@ public class AnnuncioController {
 		model.addAttribute("show_annuncio_attr", annuncioDTO);
 		model.addAttribute("categorie_totali_attr", annuncioModel.getCategorie());
 		return "annuncio/show";
+	}
+	
+	@GetMapping("/showMio/{idAnnuncio}")
+	public String showMio(@PathVariable(required = true) Long idAnnuncio, Model model) {
+		Annuncio annuncioModel = annuncioService.caricaSingoloElementoConCategorie(idAnnuncio);
+		AnnuncioDTO annuncioDTO = AnnuncioDTO.buildAnnuncioDTOFromModel(annuncioModel, true);
+		model.addAttribute("show_annuncio_attr", annuncioDTO);
+		model.addAttribute("categorie_totali_attr", annuncioModel.getCategorie());
+		return "annuncio/showMioAnnuncio";
 	}
 
 	@GetMapping("delete/{idAnnuncio}")

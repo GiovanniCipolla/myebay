@@ -16,10 +16,10 @@ public interface AnnuncioRepository extends CrudRepository<Annuncio, Long>, Cust
 	@Query("from Annuncio a left join fetch a.utente u where a.id = ?1")
 	Optional<Annuncio> findByIdConUtente(Long id);
 
-	@Query(value = "select * from annuncio where utente_id = ?1", nativeQuery = true)
+	@Query(value = "select distinct * from annuncio where utente_id = ?1", nativeQuery = true)
 	List<Annuncio> myList(Long id);
 	
-	@Query(value = "select * from annuncio a where a.aperto = true", nativeQuery = true)
+	@Query(value = "select distinct * from annuncio a where a.aperto = true", nativeQuery = true)
 	List<Annuncio> listAllAperti();
 	
 }

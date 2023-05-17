@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.prova.myebay.dto.AnnuncioDTO;
 import it.prova.myebay.dto.RuoloDTO;
 import it.prova.myebay.dto.UtenteDTO;
 import it.prova.myebay.exception.CreditoInsufficienteException;
@@ -26,6 +25,7 @@ import it.prova.myebay.model.Utente;
 import it.prova.myebay.service.RuoloService;
 import it.prova.myebay.service.UtenteService;
 import it.prova.myebay.validation.ValidationNoPassword;
+import it.prova.myebay.validation.ValidationWithPassword;
 
 @Controller
 @RequestMapping(value = "/utente")
@@ -71,7 +71,7 @@ public class UtenteController {
 	@PostMapping("/save")
 	public String save(
 			@Validated({	
-					ValidationNoPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
+					ValidationNoPassword.class,ValidationWithPassword.class }) @ModelAttribute("insert_utente_attr") UtenteDTO utenteDTO,
 			BindingResult result, Model model, RedirectAttributes redirectAttrs) {
 
 		if (!result.hasFieldErrors("password") && !utenteDTO.getPassword().equals(utenteDTO.getConfermaPassword()))
